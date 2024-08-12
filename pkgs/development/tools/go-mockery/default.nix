@@ -1,14 +1,14 @@
-{ lib, buildGoModule, fetchFromGitHub, go-mockery, runCommand, go }:
+{ lib, buildGo121Module, fetchFromGitHub, go-mockery, runCommand, go_1_21 }:
 
-buildGoModule rec {
+buildGo121Module rec {
   pname = "go-mockery";
-  version = "2.44.1";
+  version = "2.40.1";
 
   src = fetchFromGitHub {
     owner = "vektra";
     repo = "mockery";
     rev = "v${version}";
-    sha256 = "sha256-FaQzGkMUgf3QRM3gjlvUEDmnb1mZ8Yd85E4ONB5yCm4=";
+    sha256 = "sha256-n9H991ySe7mCMv1XKdC4uSTzIuXHWr8viWIQi3Blcks=";
   };
 
   preCheck = ''
@@ -24,14 +24,14 @@ buildGoModule rec {
   CGO_ENABLED = false;
 
   proxyVendor = true;
-  vendorHash = "sha256-1SzdVM1Ncpym6bPg1aSyfoAM1YiUGal3Glw0paz+buk=";
+  vendorHash = "sha256-ATZsMjzKPv5Tmhpea6AJ2XycBcNalQ/YRRpSWKr6mk4=";
 
   subPackages = [ "." ];
 
   passthru.tests = {
     generateMock = runCommand "${pname}-test" {
       nativeBuildInputs = [ go-mockery ];
-      buildInputs = [ go ];
+      buildInputs = [ go_1_21 ];
     } ''
       if [[ $(mockery --version) != *"${version}"* ]]; then
         echo "Error: program version does not match package version"
